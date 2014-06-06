@@ -3,6 +3,16 @@
 module Plugin::Gtk
   module ToolbarGenerator
 
+    # ツールボタンを得る
+    def self.create_standard_toolbutton(command, event)
+      face = command[:show_face] || command[:name] || command[:slug].to_s
+      name = if defined? face.call then lambda{ |x| face.call(event) } else face end
+      item = ::Gtk::Button.new
+      item.add(::Gtk::WebIcon.new(command[:icon], 16, 16))
+      item.tooltip(name)
+      item.relief = ::Gtk::RELIEF_NONE 
+      item end
+
     # ツールバーに表示するボタンを _container_ にpackする。
     # 返された時点では空で、後からボタンが入る(showメソッドは自動的に呼ばれる)。
     # ==== Args
@@ -20,12 +30,8 @@ module Plugin::Gtk
           toolitem = if result[3]
             result[3]
           else
-            face = command[:show_face] || command[:name] || command[:slug].to_s
-            name = if defined? face.call then lambda{ |x| face.call(event) } else face end
-            item = ::Gtk::Button.new
-            item.add(::Gtk::WebIcon.new(command[:icon], 16, 16))
-            item.tooltip(name)
-            item.relief = ::Gtk::RELIEF_NONE
+            item = create_standard_toolbutton(command, event)
+
             item.ssc(:clicked){
               command[:exec].call(event) }
 
