@@ -3,7 +3,7 @@ slug: :mikutter-toolbar-hardpoint
 depends:
   mikutter: 3.0.2
   plugin: []
-version: '0.0.1'
+version: '0.1.0'
 author: 
 name: mikutter-toolbar-hardpoint
 description: ツールバに任意のウィジェットを置けるようになる前提プラグイン
